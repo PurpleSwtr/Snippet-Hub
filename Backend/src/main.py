@@ -11,8 +11,9 @@ from redis.asyncio import Redis
 from fastapi_cache.backends.redis import RedisBackend
 
 from src.ollama.router import router as ollama_router
-from src.snippets.router import router as options_router
+# from src.snippets.router import router as snippets_router
 from src.icons.router import router as icons_router
+from src.technology.router import router as techonologies_router
 
 from src.core.config import settings
 
@@ -50,8 +51,9 @@ app.add_middleware(
 )
 
 app.include_router(ollama_router)
-app.include_router(options_router)
+# app.include_router(snippets_router)
 app.include_router(icons_router)
+app.include_router(techonologies_router)
 
 app.mount("/static/icons", StaticFiles(directory=settings.FRONT_STATIC_DIR), name="icons")
 
