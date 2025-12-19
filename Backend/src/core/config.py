@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     
     BASE_DIR: Path = Path(__file__).resolve().parents[2]
 
-    FRONT_STATIC_DIR: Path = Path(__file__).resolve().parents[3] / "Frontend" / "public" / "icons"
+    # FRONT_STATIC_DIR: Path = Path(__file__).resolve().parents[3] / "Frontend" / "public" / "icons"
 
 
     redis: RedisConfig = Field(default_factory=RedisConfig)

@@ -12,4 +12,3 @@ class TechnologyRead(BaseModel):
     id: int
     name: str
     description: str
-    content: str

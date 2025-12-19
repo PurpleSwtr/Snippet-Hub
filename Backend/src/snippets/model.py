@@ -2,9 +2,13 @@ from typing import Optional
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import JSON, String, Enum as SQLEnum, Text
 from sqlalchemy import String, ForeignKey
-from src.technology.model import TechnologyORM
 from src.snippets.enums import SnippetType
 from src.core.db import Base
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from src.technology.model import TechnologyORM
+
 
 class SnippetORM(Base):
     __tablename__ = "snippets"
@@ -37,5 +41,7 @@ class SnippetORM(Base):
     )
 
     technology: Mapped["TechnologyORM"] = relationship(
-        back_populates="snippets"
+        back_populates="snippets",
+        foreign_keys=[technology_id],
+        lazy="selectin"
     )

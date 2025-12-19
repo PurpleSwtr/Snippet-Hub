@@ -17,6 +17,9 @@ from src.technology.router import router as techonologies_router
 
 from src.core.config import settings
 
+from src.technology.model import TechnologyORM
+from src.snippets.model import SnippetORM
+
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
@@ -28,14 +31,16 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     FastAPICache.init(
         RedisBackend(redis),
         prefix=settings.cache.prefix
-        # namespace=settings.cache.namespace.icons_list,
     )
-    Base.metadata.create_all(engine)
+    
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
     print("Таблицы созданы")
     yield
 
 app = FastAPI(
-    title="LLM Manager",
+    title="Technology-Snippets",
     root_path="/api/v1",
     lifespan=lifespan 
 )
@@ -55,7 +60,7 @@ app.include_router(ollama_router)
 app.include_router(icons_router)
 app.include_router(techonologies_router)
 
-app.mount("/static/icons", StaticFiles(directory=settings.FRONT_STATIC_DIR), name="icons")
+# app.mount("/static/icons", StaticFiles(directory=settings.FRONT_STATIC_DIR), name="icons")
 
 # if __name__ == "__main__":
 #     import uvicorn
