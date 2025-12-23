@@ -20,7 +20,6 @@ async def list_icons(pack: str):
 
 # @router.get("/static/{pack}/{filename}")
 # async def get_icon_file(pack: str, filename: str):
-#     """Получение файла иконки"""
 #     try:
 #         icon_path = get_icon(pack=pack, filename=filename)
 #         return FileResponse(icon_path, media_type="image/svg+xml")

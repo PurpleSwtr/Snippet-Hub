@@ -8,12 +8,14 @@ class RedisDB(BaseModel):
 class RedisConfig(BaseModel):
     host: str = Field(default="localhost", validation_alias="REDIS_HOST")
     port: int = Field(default=6379, validation_alias="REDIS_PORT")
-    TTL: int = Field(default=120, validation_alias="CACHE_TTL")
+    TTL: int = Field(default=15, validation_alias="CACHE_TTL")
     db: RedisDB = RedisDB()
 
 class CacheNamespace(BaseModel):
     icons_list: str = "icons-list"
-    options_list: str = "options-list"
+    # options_list: str = "options-list"
+    snippets_list: str = "snippets-list"
+    technologies_list: str = "technologies-list"
 
 class CacheConfig(BaseModel):
     prefix: str = "fastapi-cache"
@@ -24,7 +26,7 @@ class Settings(BaseSettings):
     
     BASE_DIR: Path = Path(__file__).resolve().parents[2]
 
-    # FRONT_STATIC_DIR: Path = Path(__file__).resolve().parents[3] / "Frontend" / "public" / "icons"
+    FRONT_STATIC_DIR: Path = Path(__file__).resolve().parents[3] / "Frontend" / "public" / "icons"
 
 
     redis: RedisConfig = Field(default_factory=RedisConfig)

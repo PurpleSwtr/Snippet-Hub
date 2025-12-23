@@ -31,9 +31,9 @@ class SnippetORM(Base):
     content: Mapped[str] = mapped_column(Text, nullable=False)
 
     #   В теории:    
-    # - Для CODE: {"language": "python", "framework": "fastapi"}
-    # - Для LINK: {"url": "https://...", "preview": "..."}
-    # - Для ARCHIVE: {"filename": "project.zip", "size": 1024}
+    # - CODE: {"language": "python", "framework": "fastapi"}
+    # - LINK: {"url": "https://...", "preview": "..."}
+    # - ARCHIVE: {"filename": "project.zip", "size": 1024}
     meta_data: Mapped[Optional[dict]] = mapped_column(
         JSON,
         nullable=True,

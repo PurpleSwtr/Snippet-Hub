@@ -2,8 +2,6 @@ from pydantic import BaseModel, Field
 
 from src.snippets.enums import CategoryType, OptionType
 
-
-
 class OptionResponse(BaseModel):
     content: str
 

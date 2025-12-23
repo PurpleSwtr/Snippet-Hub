@@ -1,17 +1,15 @@
-# --- Python / Backend ---
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 static/
-# Виртуальные окружения
+
 .venv
 .venv/
 venv/
 env/
 ENV/
 
-# Зависимости и дистрибутивы
 build/
 develop-eggs/
 dist/
@@ -30,15 +28,14 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# Pytest
 .pytest_cache/
 .coverage
 htmlcov/
 
-# Logs
+
 *.log
 
-# --- Node.js / Frontend (Vue/Nuxt) ---
+
 Frontend/node_modules/
 node_modules/
 npm-debug.log*
@@ -46,7 +43,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Nuxt / Vite build output
+
 .nuxt/
 .output/
 Frontend/dist/
@@ -54,7 +51,6 @@ dist/
 dist-ssr/
 *.local
 
-# Editor directories (VS Code, JetBrains, etc.)
 .vscode/*
 !.vscode/extensions.json
 .idea/
@@ -65,18 +61,16 @@ dist-ssr/
 *.sw?
 .DS_Store
 
-# --- Docker & Environment Variables ---
-# Секретные ключи и настройки окружения
 .env
 .env.*
 !.env.example
 
-# Если вы когда-нибудь переключитесь на локальное хранение базы данных (bind mount)
 postgres_data/
 pgadmin_data/
 
-# --- Прочее ---
-# Файлы авто-импорта типов (иногда их комитят, иногда нет, но часто они меняются)
-# Если хотите их комитить - закомментируйте строки ниже
-# Frontend/auto-imports.d.ts
-# Frontend/components.d.ts
+
+Frontend/auto-imports.d.ts
+Frontend/components.d.ts
+Frontend/src/assets
+Frontend/public/icons/
+Backend/migrations/
