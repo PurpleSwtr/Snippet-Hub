@@ -90,7 +90,7 @@ const getIconPath = (iconName: string) => {
             <UIcon name="i-heroicons-wrench" class="w-5 h-5 text-gray-400" />
           </template>
         </UButton>
-              <UButton
+        <UButton
           to="/create_tag"
           label="Новый тэг"
           variant="ghost"

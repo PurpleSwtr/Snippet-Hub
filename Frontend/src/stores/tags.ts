@@ -14,7 +14,7 @@ export const useTagStore = defineStore('tags', () => {
         tags.value = await response.json()
       }
     } catch (e) {
-      console.error("Failed to fetch tags", e)
+      console.error(e)
     } finally {
       isLoading.value = false
     }
