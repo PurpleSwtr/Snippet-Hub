@@ -20,9 +20,32 @@ export const useTagStore = defineStore('tags', () => {
     }
   }
 
+  async function createTag(payload: { name: string, color?: string }) {
+    isLoading.value = true
+    try {
+      const response = await fetch('http://localhost:8000/api/v1/tags/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+
+      if (!response.ok) {
+        const err = await response.json()
+        throw new Error(err.detail || 'Ошибка создания тега')
+      }
+
+      const newTag = await response.json()
+      tags.value.push(newTag)
+      return newTag
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   return {
     tags,
     isLoading,
-    fetchTags
+    fetchTags,
+    createTag
   }
 })

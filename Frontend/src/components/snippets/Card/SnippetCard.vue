@@ -7,7 +7,8 @@
         </p>
         <div class="inline-flex gap-3 shrink-0">
           <ChatModal />
-          <EditModal />
+          <EditModal :snippet="snippet" />
+
           <UIcon
             name="i-heroicons-document-duplicate"
             class="h-5 w-5 hover:scale-110 duration-300 hover:cursor-pointer hover:text-indigo-400"
@@ -16,6 +17,19 @@
         </div>
       </div>
     </template>
+
+    <div v-if="snippet.tags && snippet.tags.length" class="px-0 pb-2 flex flex-wrap gap-1">
+      <UBadge
+        v-for="tag in snippet.tags"
+        :key="tag.id || tag.name"
+        color="gray"
+        variant="soft"
+        size="xs"
+      >
+        {{ tag.name }}
+      </UBadge>
+    </div>
+
     <div class="overflow-hidden relative p-0 cursor-pointer">
        <DynamicContent
           :type="snippet.snippet_type"
@@ -27,6 +41,10 @@
 </template>
 
 <script setup lang="ts">
+import EditModal from './EditModal.vue';
+import ChatModal from './ChatModal.vue';
+import DynamicContent from './DynamicContent.vue';
+
 const props = defineProps<{
   snippet: any
 }>()

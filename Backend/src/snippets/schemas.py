@@ -13,6 +13,12 @@ class SnippetCreate(BaseModel):
     technology_id: int
     tags: list[TagBase] = [] 
 
+class SnippetUpdate(BaseModel):
+    title: Optional[str] = None
+    snippet_type: Optional[SnippetType] = None
+    content: Optional[str] = None
+    # technology_id: Optional[int] = None
+    tags: Optional[list[TagBase]] = [] 
 
 class SnippetResponse(BaseModel):
     id: int

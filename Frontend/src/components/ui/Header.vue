@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const links = [
   { label: 'Home', to: '/', icon: 'i-heroicons-home' },
-  { label: 'Builder', to: '/builder', icon: 'i-heroicons-wrench-screwdriver' },
+  // { label: 'Builder', to: '/builder', icon: 'i-heroicons-wrench-screwdriver' },
   { label: 'Agent', to: '/agent', icon: 'i-heroicons-chat-bubble-left-right' },
   { label: 'Settings', to: '/settings', icon: 'i-heroicons-cog-6-tooth' }
 ]

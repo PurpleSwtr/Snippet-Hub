@@ -55,8 +55,7 @@ class SnippetORM(Base):
     )
     tags: Mapped[list["TagORM"]] = relationship(
         "TagORM",
-        secondary="snippet_tags",  # Имя связующей таблицы
+        secondary=snippet_tags,
         back_populates="snippets",
-        lazy="selectin",  # или "joined"
-        cascade="all, delete"  # Важно для каскадного удаления
+        lazy="selectin", 
     )

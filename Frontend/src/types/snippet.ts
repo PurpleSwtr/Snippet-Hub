@@ -1,3 +1,5 @@
+import type { TagBase } from "./tag"
+
 export enum SnippetType {
   CODE = "code",
   MARKDOWN = "markdown",
@@ -12,6 +14,7 @@ export interface Snippet {
   content: string
   snippet_type: SnippetType
   technology_id: number
+  tags: { id: number; name: string }[]
 }
 
 export interface SnippetCreate {

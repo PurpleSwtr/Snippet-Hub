@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from fastapi_cache.decorator import cache
 from src.technology.model import TechnologyORM
 from src.snippets.model import SnippetORM
-from src.snippets.schemas import SnippetCreate, SnippetResponse
+from src.snippets.schemas import SnippetCreate, SnippetResponse, SnippetUpdate
 from src.snippets.enums import CategoryType
 from src.core.dependencies import SessionDep
 from src.snippets.repository import SnippetRepository
@@ -46,12 +46,17 @@ async def get_snippets_by_technology(
 
 
 @router.delete("/", status_code=200)
-async def delete_all_technologies(db: SessionDep):
+async def delete_all_snippets(db: SessionDep):
     repo = SnippetRepository(db)
     await repo.delete_all()
-    return {"message": "Все технологии удалены"}
+    return {"message": "Все сниппеты удалены"}
 
-@router.delete("/{id}", status_code=204)
-async def delete(tech_id: int, db: SessionDep):
+@router.delete("/{snippet_id}", status_code=204)
+async def delete(snippet_id: int, db: SessionDep):
     repo = SnippetRepository(db)
-    await repo.delete(tech_id)
+    await repo.delete(snippet_id)
+
+@router.patch("/{snippet_id}", response_model=SnippetResponse)
+async def update_snippet(snippet_id: int, snippet_data: SnippetUpdate, db: SessionDep):
+    repo = SnippetRepository(db)
+    return await repo.update(snippet_id, snippet_data)
