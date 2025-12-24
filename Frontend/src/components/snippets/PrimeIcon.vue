@@ -12,6 +12,7 @@
       v-if="props.icon"
       :src="`/icons/all/${props.icon}`"
       class="w-12 h-12 object-contain relative z-10"
+      draggable="false"
     />
   </div>
 </template>

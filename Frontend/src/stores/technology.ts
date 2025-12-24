@@ -21,10 +21,10 @@ export const useTechnologyStore = defineStore('technology', () => {
     }
   }
 
-  async function createTechnology(payload: { name: string; description: string; icon: string }) {
+  async function createTechnology(payload: { name: string; description: string; icon: string; about: string }) {
     isLoading.value = true
     try {
-      const response = await fetch('http://localhost:8000/api/v1/technology/new_technology', {
+      const response = await fetch('http://localhost:8000/api/v1/technology/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

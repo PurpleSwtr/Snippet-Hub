@@ -43,7 +43,6 @@
         class="w-full"
         multiple
         placeholder="Выберите тэги"
-        create-item
         @create="onTagCreate"
         />
         <div class="mt-4">
@@ -80,26 +79,30 @@
 <script setup lang="ts">
 import { SnippetType } from '@/types/snippet';
 import type { SelectMenuItem } from '@nuxt/ui';
-import { reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useSnippetStore } from '@/stores/snippets';
-
-const tagsItems = ref([])
-const tagsValue = ref()
+import { useTagStore } from '@/stores/tags';
 
 const props = defineProps<{
   technologyId: number
 }>();
 
 const snippetStore = useSnippetStore();
+const tagStore = useTagStore()
+
+onMounted(() => {
+  tagStore.fetchTags()
+})
+
+const tagsItems = computed(() => {
+  return tagStore.tags.map(tag => tag.name)
+})
+const tagsValue = ref([])
+
 const toast = useToast();
 
 const isLoading = ref(false);
 const isModalOpen = ref(false);
-
-function onTagCreate(item: string) {
-  tagsItems.value.push(item)
-  tagsValue.value = item
-}
 
 function createSnippetTypeItems(): SelectMenuItem[] {
   const meta = {
@@ -138,11 +141,16 @@ async function handleSubmit() {
   isLoading.value = true;
 
   try {
+    const formattedTags = tagsValue.value.map((tagName: string) => {
+      return { name: tagName }
+    });
+
     await snippetStore.createSnippet({
       title: newSnippetForm.title,
       content: newSnippetForm.content,
       snippet_type: selectedValue.value.value,
-      technology_id: props.technologyId
+      technology_id: props.technologyId,
+      tags: formattedTags
     });
 
     newSnippetForm.title = '';
@@ -168,6 +176,8 @@ async function handleSubmit() {
     });
   } finally {
     isLoading.value = false;
+    tagsValue.value = []
+
   }
 }
 </script>

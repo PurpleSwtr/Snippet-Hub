@@ -64,7 +64,6 @@ const getIconPath = (iconName: string) => {
               name="i-heroicons-cube"
               class="w-5 h-5 text-gray-400"
             />
-
           </template>
         </UButton>
       </nav>
@@ -73,6 +72,39 @@ const getIconPath = (iconName: string) => {
         {{ technologyStore.error }}
       </div>
     </div>
+
+    <div class="border-t border-gray-200 dark:border-gray-800 p-4 mt-auto">
+      <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">
+        Меню
+      </h3>
+      <UButton
+          to="/create_technology"
+          label="Новая технология"
+          variant="ghost"
+          color="gray"
+          block
+          class="justify-start text-left text-xl pl-5"
+          :class="{ 'bg-indigo-200 dark:bg-gray-800 text-indigo-500 dark:text-indigo-400': route.path === '/create_technology' }"
+        >
+          <template #leading>
+            <UIcon name="i-heroicons-wrench" class="w-5 h-5 text-gray-400" />
+          </template>
+        </UButton>
+              <UButton
+          to="/create_tag"
+          label="Новый тэг"
+          variant="ghost"
+          color="gray"
+          block
+          class="justify-start text-left text-xl pl-5"
+          :class="{ 'bg-indigo-200 dark:bg-gray-800 text-indigo-500 dark:text-indigo-400': route.path === '/create_tag' }"
+        >
+          <template #leading>
+            <UIcon name="i-heroicons-tag" class="w-5 h-5 text-gray-400" />
+          </template>
+        </UButton>
+      </div>
+
 
   </UScrollArea>
   </aside>

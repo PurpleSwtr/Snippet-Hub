@@ -19,4 +19,5 @@ export interface SnippetCreate {
   snippet_type: SnippetType
   content: string
   technology_id: number
+  tags: { name: string }[]
 }

@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class TagBase(BaseModel):
     name: str
-    color: Optional[str] = None
+    # color: Optional[str] = None
 
 class TagResponse(TagBase):
     id: int
