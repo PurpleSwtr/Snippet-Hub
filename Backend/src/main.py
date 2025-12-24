@@ -13,6 +13,7 @@ from fastapi_cache.backends.redis import RedisBackend
 from src.snippets.router import router as snippets_router
 from src.icons.router import router as icons_router
 from src.technology.router import router as techonologies_router
+from src.tags.router import router as tags_router
 
 from src.core.config import settings
 
@@ -55,6 +56,7 @@ app.add_middleware(
 app.include_router(snippets_router)
 app.include_router(icons_router)
 app.include_router(techonologies_router)
+app.include_router(tags_router)
 
 # app.mount("/static/icons", StaticFiles(directory=settings.FRONT_STATIC_DIR), name="icons")
 

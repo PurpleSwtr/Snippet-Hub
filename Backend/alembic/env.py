@@ -6,8 +6,10 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
 from src.core.db import Base
+
 from src.technology.model import TechnologyORM
 from src.snippets.model import SnippetORM
+from src.tags.model import TagORM
 
 config = context.config
 

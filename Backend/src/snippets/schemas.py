@@ -1,5 +1,8 @@
+from typing import Optional
 from pydantic import BaseModel, Field
 
+from src.tags.schemas import TagBase, TagResponse
+from src.tags.model import TagORM
 from src.technology.model import TechnologyORM
 from src.snippets.enums import SnippetType
 
@@ -8,15 +11,19 @@ class SnippetCreate(BaseModel):
     snippet_type: SnippetType
     content: str
     technology_id: int
+    tags: list[TagBase] = [] 
+
 
 class SnippetResponse(BaseModel):
     id: int
     title: str
     content: str
     snippet_type: SnippetType
-    
+    tags: list[TagResponse] = [] 
+
     class Config:
         from_attributes = True
+
 # class SnippetORM(Base):
 #     __tablename__ = "snippets"
     

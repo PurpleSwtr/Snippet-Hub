@@ -1,14 +1,22 @@
 from typing import Optional
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import JSON, String, Enum as SQLEnum, Text
+from sqlalchemy import JSON, Column, String, Enum as SQLEnum, Table, Text
 from sqlalchemy import String, ForeignKey
 from src.snippets.enums import SnippetType
 from src.core.db import Base
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
+    from src.tags.model import TagORM
     from src.technology.model import TechnologyORM
 
+
+snippet_tags = Table(
+    "snippet_tags",
+    Base.metadata,
+    Column("snippet_id", ForeignKey("snippets.id", ondelete="CASCADE"), primary_key=True),
+    Column("tag_id", ForeignKey("tags.id", ondelete="CASCADE"), primary_key=True),
+)
 
 class SnippetORM(Base):
     __tablename__ = "snippets"
@@ -44,4 +52,11 @@ class SnippetORM(Base):
         back_populates="snippets",
         foreign_keys=[technology_id],
         lazy="selectin"
+    )
+    tags: Mapped[list["TagORM"]] = relationship(
+        "TagORM",
+        secondary="snippet_tags",  # Имя связующей таблицы
+        back_populates="snippets",
+        lazy="selectin",  # или "joined"
+        cascade="all, delete"  # Важно для каскадного удаления
     )

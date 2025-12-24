@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy import delete, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from fastapi_cache.decorator import cache
 from src.technology.model import TechnologyORM
@@ -17,16 +17,8 @@ async def create_snippet(
     snippet_data: SnippetCreate,
     db: SessionDep,
 ):
-    stmt = select(SnippetORM).where(SnippetORM.title == snippet_data.title)
-    existing = await db.execute(stmt)
-    if existing.scalar_one_or_none():
-        raise HTTPException(status_code=409, detail="Запись уже существует")
-
-    new_tech = SnippetORM(**snippet_data.model_dump())
-    db.add(new_tech)
-    await db.commit()
-    await db.refresh(new_tech)
-    return new_tech
+    repo = SnippetRepository(db)
+    return await repo.create(snippet_data)
     
 @router.get(path="/", response_model=list[SnippetResponse])
 async def get_snippets(
