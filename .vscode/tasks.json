@@ -1,0 +1,95 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Запуск бэкенда",
+      "type": "shell",
+      "command": "./Runners/Backend.sh",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "detail": "Запуск FastAPI бэкенда с перезагрузкой"
+    },
+    {
+      "label": "Запуск фронтенда",
+      "type": "shell",
+      "command": "./Runners/Frontend.sh",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "detail": "Запуск React/Vue фронтенда в dev режиме"
+    },
+    {
+      "label": "Запуск всего приложения",
+      "dependsOrder": "parallel",
+      "dependsOn": [
+        "Запуск бэкенда",
+        "Запуск фронтенда"
+      ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "Параллельный запуск бэкенда и фронтенда"
+    },
+    {
+      "label": "Создать новую миграцию",
+      "type": "shell",
+      "command": "cd Backend && alembic revision --autogenerate -m ${input:migrationName}",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always"
+      },
+      "detail": "Создать autogenerate миграцию Alembic"
+    },
+    {
+      "label": "Применить миграции",
+      "type": "shell",
+      "command": "cd Backend && alembic upgrade head",
+      "problemMatcher": [],
+      "detail": "Применить все неподнятые миграции"
+    },
+    {
+      "label": "Откатить миграцию",
+      "type": "shell",
+      "command": "cd Backend && alembic downgrade -1",
+      "problemMatcher": [],
+      "detail": "Откатить последнюю миграцию"
+    },
+    {
+      "label": "Показать историю миграций",
+      "type": "shell",
+      "command": "cd Backend && alembic history",
+      "problemMatcher": [],
+      "detail": "Показать историю миграций Alembic"
+    },
+    {
+      "label": "Проверить текущую миграцию",
+      "type": "shell",
+      "command": "cd Backend && alembic current",
+      "problemMatcher": [],
+      "detail": "Показать текущую применённую миграцию"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "migrationName",
+      "type": "promptString",
+      "description": "Введите описание миграции:",
+      "default": "add_new_column"
+    }
+  ]
+}
