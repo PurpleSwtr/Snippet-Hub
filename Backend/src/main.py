@@ -10,8 +10,7 @@ from src.core.db import Base, engine
 from redis.asyncio import Redis
 from fastapi_cache.backends.redis import RedisBackend
 
-from src.ollama.router import router as ollama_router
-# from src.snippets.router import router as snippets_router
+from src.snippets.router import router as snippets_router
 from src.icons.router import router as icons_router
 from src.technology.router import router as techonologies_router
 
@@ -32,11 +31,9 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         RedisBackend(redis),
         prefix=settings.cache.prefix
     )
-    
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-
-    print("Таблицы созданы")
+    # FIXME: Заглушка
+    # async with engine.begin() as conn:
+    #     await conn.run_sync(Base.metadata.create_all)
     yield
 
 app = FastAPI(
@@ -55,8 +52,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(ollama_router)
-# app.include_router(snippets_router)
+app.include_router(snippets_router)
 app.include_router(icons_router)
 app.include_router(techonologies_router)
 

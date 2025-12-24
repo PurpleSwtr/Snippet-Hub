@@ -21,11 +21,11 @@ const getIconPath = (iconName: string) => {
     <UScrollArea
     class="w-full h-full"
     >
-    <div class="p-4 flex-1">
+    <!-- <div class="p-4 flex-1">
       <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">
         Меню
       </h3>
-    </div>
+    </div> -->
     <div class="p-4 flex-1">
       <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">
         Technologies
@@ -36,7 +36,7 @@ const getIconPath = (iconName: string) => {
          <USkeleton class="h-8 max-w-3/4"/>
       </div>
 
-      <nav v-else class="space-y-1">
+      <nav v-else class="space-y-2">
         <UButton
           v-for="tech in technologyStore.technologies"
           :key="tech.id"
@@ -46,16 +46,17 @@ const getIconPath = (iconName: string) => {
           variant="ghost"
           color="gray"
           block
-          class="justify-start text-left"
-          :class="{ 'bg-gray-100 dark:bg-gray-800 text-primary-500': route.path === `/technology/${tech.name}` }"
+          class="justify-start text-left text-xl pl-5"
+          :class="{ 'bg-indigo-200 dark:bg-gray-800 text-indigo-500 dark:text-indigo-400': route.path === `/technology/${tech.name}` }"
         >
-          <template #leading>
+          <template #leading
+          >
 
             <img
               v-if="tech.icon"
               :src="getIconPath(tech.icon)"
               :alt="tech.name"
-              class="w-5 h-5 object-contain"
+              class="w-6 h-6 object-contain"
             />
 
             <UIcon

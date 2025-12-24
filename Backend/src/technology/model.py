@@ -14,6 +14,7 @@ class TechnologyORM(Base):
     name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False, index=True)
     icon: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    about: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     
     snippets: Mapped[list["SnippetORM"]] = relationship(
         "SnippetORM",

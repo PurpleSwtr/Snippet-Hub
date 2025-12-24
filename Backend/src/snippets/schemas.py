@@ -1,26 +1,50 @@
 from pydantic import BaseModel, Field
 
-from src.snippets.enums import CategoryType, OptionType
+from src.technology.model import TechnologyORM
+from src.snippets.enums import SnippetType
 
-class OptionResponse(BaseModel):
+class SnippetCreate(BaseModel):
+    title: str
+    snippet_type: SnippetType
     content: str
+    technology_id: int
 
-class OptionCreate(BaseModel):
-    name: str
-    icon: str
-    description: str
-    content: str
-    option_type: OptionType
-    public: bool = True
-    category: CategoryType | None = None
-
-class OptionRead(BaseModel):
+class SnippetResponse(BaseModel):
     id: int
-    name: str
-    description: str
+    title: str
     content: str
-    option_type: OptionType
-    category: CategoryType | None
+    snippet_type: SnippetType
+    
+    class Config:
+        from_attributes = True
+# class SnippetORM(Base):
+#     __tablename__ = "snippets"
+    
+#     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+#     title: Mapped[str] = mapped_column(String(200), nullable=False, index=True)
 
-class OptionPrompt(BaseModel):
-    content: str
+#     technology_id: Mapped[int] = mapped_column(
+#         ForeignKey("technologies.id", ondelete="CASCADE"),
+#         nullable=False,
+#         index=True
+#     )
+    
+#     snippet_type: Mapped[SnippetType] = mapped_column(
+#         SQLEnum(SnippetType),
+#         nullable=False,
+#         index=True
+#     )
+
+#     content: Mapped[str] = mapped_column(Text, nullable=False)
+
+#     meta_data: Mapped[Optional[dict]] = mapped_column(
+#         JSON,
+#         nullable=True,
+#         default=dict
+#     )
+
+#     technology: Mapped["TechnologyORM"] = relationship(
+#         back_populates="snippets",
+#         foreign_keys=[technology_id],
+#         lazy="selectin"
+#     )

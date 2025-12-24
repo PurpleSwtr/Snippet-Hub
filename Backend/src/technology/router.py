@@ -1,89 +1,65 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy import delete, select
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException
 from fastapi_cache.decorator import cache
-from src.snippets.enums import CategoryType
-from src.core.dependencies import SessionDep, get_db
+from src.core.dependencies import SessionDep
 from src.core.config import settings
-from src.technology.model import TechnologyORM
-from src.technology.schemas import TechnologyCreate, TechnologyRead, TechnologyUpdate
+from src.technology.repository import TechnologyRepository
+from src.technology.schemas import TechnologyCreate, TechnologyRead, TechnologyUpdate, TechnologyUpdateDescription, TechnologyUpdateIcon
 
 router = APIRouter(prefix='/technology', tags=['Technology'])
 
 @router.get("/", response_model=list[TechnologyRead])
-@cache(expire=settings.redis.TTL, namespace=settings.cache.namespace.technologies_list) 
+@cache(expire=settings.redis.TTL, namespace=settings.cache.namespace.technologies_list)
 async def get_technologies(db: SessionDep):
-    stmt = select(TechnologyORM).order_by(TechnologyORM.name)
-    result = await db.execute(stmt)
-    return result.scalars().all()
+    repo = TechnologyRepository(db)
+    return await repo.get_all()
 
-@router.get(path="/techology/{id}")
-@cache(expire=settings.redis.TTL, namespace=settings.cache.namespace.technologies_list) 
-async def get_technology(id: int, db: SessionDep):
-    stmt = select(TechnologyORM).where(TechnologyORM.id == id)
-    result = await db.execute(stmt)
-    return result.scalar_one_or_none()
-
-@router.post(path="/new_technology",)
-async def create_technology(
-    technology_data: TechnologyCreate,
-    db: SessionDep,
-):
-    stmt = select(TechnologyORM).where(TechnologyORM.name == technology_data.name)
-    existing = await db.execute(stmt)
-    if existing.scalar_one_or_none():
-         raise HTTPException(status_code=409, detail="Запись уже существует")
-
-    new_tech = TechnologyORM(**technology_data.model_dump())
-    db.add(new_tech)
-    await db.commit()
-    await db.refresh(new_tech)
-    return new_tech
-    
-
-@router.patch("/{technology_id}", response_model=TechnologyRead)
-async def update_technology(
-    technology_id: int,
-    technology_data: TechnologyUpdate,
-    db: SessionDep,
-):
-    stmt = select(TechnologyORM).where(TechnologyORM.id == technology_id)
-    result = await db.execute(stmt)
-    technology = result.scalar_one_or_none()
-    
-    if not technology:
+@router.get("/{tech_id}", response_model=TechnologyRead)
+@cache(expire=settings.redis.TTL, namespace=settings.cache.namespace.technologies_list)
+async def get_technology(tech_id: int, db: SessionDep):
+    repo = TechnologyRepository(db)
+    tech = await repo.get_by_id(tech_id)
+    if not tech:
         raise HTTPException(status_code=404, detail="Технология не найдена")
+    return tech
 
-    update_dict = technology_data.model_dump()
-    for key, value in update_dict.items():
-        setattr(technology, key, value)
-    
-    await db.commit()
-    await db.refresh(technology)
-    return technology
+@router.post("/", response_model=TechnologyRead, status_code=201)
+async def create_technology(tech_data: TechnologyCreate, db: SessionDep):
+    repo = TechnologyRepository(db)
+    return await repo.create(tech_data)
 
-@router.delete("/delete/all")
+@router.patch("/{tech_id}", response_model=TechnologyRead)
+async def update_technology(tech_id: int, tech_data: TechnologyUpdate, db: SessionDep):
+    repo = TechnologyRepository(db)
+    return await repo.update(tech_id, tech_data)
+
+@router.delete("/{tech_id}", status_code=204)
+async def delete_technology(tech_id: int, db: SessionDep):
+    repo = TechnologyRepository(db)
+    await repo.delete(tech_id)
+
+@router.delete("/", status_code=200)
 async def delete_all_technologies(db: SessionDep):
-    try:
-        stmt = delete(TechnologyORM)
-        result = db.execute(stmt)
-        await db.commit()
-        return {"message": "Все технологии удалены"}
-    except Exception as e:
-        await db.rollback()
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Ошибка при удалении всех технологий: {str(e)}"
-        )
-    
-@router.delete("/{technology_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_technology(technology_id: int, db: SessionDep):
-    stmt = select(TechnologyORM).where(TechnologyORM.id == technology_id)
-    result = await db.execute(stmt)
-    technology = result.scalar_one_or_none()
-    
-    if technology is None:
-        raise HTTPException(status_code=404, detail="Технология не найдена")
-    
-    await db.delete(technology)
-    await db.commit()
+    repo = TechnologyRepository(db)
+    await repo.delete_all()
+    return {"message": "Все технологии удалены"}
+
+@router.put("/{tech_id}/update-icon", response_model=TechnologyRead)
+async def update_technology_icon(
+    tech_id: int,
+    tech_data: TechnologyUpdateIcon,
+    db: SessionDep
+):
+    repo = TechnologyRepository(db)
+    updated_tech = await repo.update_icon(tech_id, tech_data)
+    return updated_tech
+
+
+@router.put("/{tech_id}/update-description", response_model=TechnologyRead)
+async def update_technology_description(
+    tech_id: int,
+    tech_data: TechnologyUpdateDescription,
+    db: SessionDep
+):
+    repo = TechnologyRepository(db)
+    updated_tech = await repo.update_description(tech_id, tech_data)
+    return updated_tech

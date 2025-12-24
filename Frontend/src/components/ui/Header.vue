@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const links = [
-  { label: 'Builder', to: '/', icon: 'i-heroicons-wrench-screwdriver' },
-  { label: 'Templates', to: '/templates', icon: 'i-heroicons-document-duplicate' },
+  { label: 'Home', to: '/', icon: 'i-heroicons-home' },
+  { label: 'Builder', to: '/builder', icon: 'i-heroicons-wrench-screwdriver' },
+  { label: 'Agent', to: '/agent', icon: 'i-heroicons-chat-bubble-left-right' },
   { label: 'Settings', to: '/settings', icon: 'i-heroicons-cog-6-tooth' }
 ]
 </script>
@@ -10,8 +11,8 @@ const links = [
   <header class="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
     <UContainer class="flex justify-between items-center h-16">
       <div class="flex items-center gap-2">
-        <UIcon name="i-heroicons-cube-transparent" class="w-8 h-8 text-primary-500" />
-        <h1 class="text-xl font-bold text-gray-900 dark:text-white">Tech-Docs</h1>
+        <UIcon name="i-heroicons-command-line" class="w-8 h-8 text-indigo-500" />
+        <h1 class="text-xl font-bold text-indigo-500 dark:text-indigo-500">Tech-Snippets</h1>
       </div>
 
       <nav class="flex gap-4">
